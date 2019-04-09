@@ -99,3 +99,51 @@ $ mprof plot pipeline_predict.dat --title="Prediction (n=100)"
 
 Which shows a spike in memory use during transformation routine of
 `TruncatedSVD`.
+
+For custom plotting, the profiling data can be read using `mprof`'s Python API
+and plotted using [matplotlib](https://matplotlib.org/).
+
+```python
+from mprof import read_mprofile_file
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+plt.style.use("ggplot")
+cmap = plt.get_cmap("tab10")
+
+data = read_mprofile_file("pipeline_predict.dat")
+
+fig, ax = plt.subplots(figsize=(8, 6))
+mem_usage = np.asarray(data["mem_usage"])
+timestamp = np.asarray(data["timestamp"])
+elapsed = timestamp - np.min(timestamp)
+
+# Add a line for the entire time-series, so there aren't gaps
+# between segments.
+ax.plot(elapsed, mem_usage, c="k", alpha=.5)
+
+# Give each function its own color.
+colors = {}
+for i, (label, intervals) in enumerate(data["func_timestamp"].items()):
+    if label not in colors:
+        colors[label] = cmap(i)
+
+    for j, (start, end, _, _) in enumerate(intervals):
+        # Don't duplicate legend entries when there are multiple intervals.
+        label_ = "_nolegend_" if j != 0 else label
+        within_interval = (timestamp >= start) & (timestamp <= end)
+        ax.plot(
+            elapsed[within_interval],
+            mem_usage[within_interval],
+            c=colors[label],
+            label=label_,
+        )
+
+ax.set_title("Prediction (n=100)")
+ax.set_xlabel("Elapsed (seconds)")
+ax.set_ylabel("Memory (MiB)")
+ax.legend()
+```
+
+![](imgs/custom.png)
