@@ -40,7 +40,6 @@ used as normal.
 
 ## Examples
 
-
 Train a text classification model with added profiling of the training process.
 
 ```python
@@ -92,8 +91,11 @@ with open("pipeline_predict.dat", "w") as fh, profile(pipeline, fh):
 Use `mprof` to plot the results.
 
 ```bash
+$ mprof plot pipeline_train.dat --title="Training"
 $ mprof plot pipeline_predict.dat --title="Prediction (n=100)"
 ```
 
-And we can see that there is a spike in memory use during the transformation
-routine of `TruncatedSVD`.
+![](imgs/training.png) ![](imgs/prediction.png)
+
+Which shows a spike in memory use during transformation routine of
+`TruncatedSVD`.
