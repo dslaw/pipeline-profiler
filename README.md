@@ -1,5 +1,7 @@
 # pipeline-profiler
 
+[![Build Status](https://travis-ci.org/dslaw/pipeline-profiler.svg?branch=master)](https://travis-ci.org/dslaw/pipeline-profiler)
+
 Add memory and wall-clock profiling to scikit-learn pipelines.
 
 pipeline-profiler uses the time-based memory profiling of
@@ -147,3 +149,17 @@ ax.legend()
 ```
 
 ![](imgs/custom.png)
+
+
+## Development
+
+To get started, ensure both `conda` and `tox` are installed. Conda environments
+are used, via `tox-conda`, to isolate both Python and system dependencies, which
+is necessary for `psutil` (it requires headers for the specific Python
+interpreter being used).
+
+Use `tox` to lint and run tests for a specific Python version:
+
+```bash
+$ tox -e py37
+```
