@@ -153,13 +153,13 @@ ax.legend()
 
 ## Development
 
-To get started, ensure both `conda` and `tox` are installed. Conda environments
-are used, via `tox-conda`, to isolate both Python and system dependencies, which
-is necessary for `psutil` (it requires headers for the specific Python
-interpreter being used).
-
-Use `tox` to lint and run tests for a specific Python version:
+To get started, `tox` should be installed in the host environment. Then use
+`tox` to lint and run tests for a specific Python version:
 
 ```bash
 $ tox -e py37
 ```
+
+Note that conda environments are used, via the `tox-conda` plugin, to isolate
+both Python and system dependencies. This is necessary for `psutil`, which
+requires headers for the specific Python interpreter being used.

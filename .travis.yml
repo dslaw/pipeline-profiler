@@ -18,7 +18,7 @@ before_install:
   - conda config --set always_yes yes
 
 install:
-  - pip install tox tox-conda
+  - pip install tox
 
 script:
   - tox
